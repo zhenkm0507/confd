@@ -208,8 +208,8 @@ func (client *ConfigClient) ListenConfig(param vo.ConfigParam) (err error) {
 
 func (client *ConfigClient) listenConfigTask(clientConfig constant.ClientConfig, param vo.ConfigParam) {
 	var listeningConfigs string
-	log.Printf("[INFO] ========================username:%s ", clientConfig.Username)
-	log.Printf("[INFO] ========================password:%s ", clientConfig.Password)
+	//log.Printf("[INFO] ========================username:%s ", clientConfig.Username)
+	//log.Printf("[INFO] ========================password:%s ", clientConfig.Password)
 	// 检查&拼接监听参数
 	client.mutex.Lock()
 	if len(param.DataId) <= 0 {
@@ -248,6 +248,9 @@ func (client *ConfigClient) listenConfigTask(clientConfig constant.ClientConfig,
 	// http 请求
 	params := make(map[string]string)
 	params[constant.KEY_LISTEN_CONFIGS] = listeningConfigs
+	params["username"] =  clientConfig.Username
+	params["password"] =  clientConfig.Password
+
 	var changed string
 	changedTmp, err := client.configProxy.ListenConfig(params, tenant, clientConfig.AccessKey, clientConfig.SecretKey)
 	if err == nil {
